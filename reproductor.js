@@ -67,7 +67,7 @@ function cargarCancion(sentido){
 
   reproductor.deslizador['progresoCancion'].value = 0;
 
-  setTimeout( () => cambiarCancion(), 300);
+  setTimeout( () => cambiarCancion(), 500);
 }
 
 function cambiarCancion(){
