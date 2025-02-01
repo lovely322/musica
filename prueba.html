@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reproductor Musical</title>
+    <style>
+        body {
+            background: #1a1a1a;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            color: white;
+        }
+
+        .player {
+            background: #2a2a2a;
+            padding: 2rem;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+            max-width: 400px;
+            width: 90%;
+        }
+
+        .album-art {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            margin: 1rem auto;
+            overflow: hidden;
+            position: relative;
+            border: 3px solid #fff;
+            animation: rotate 20s linear infinite;
+            animation-play-state: paused;
+        }
+
+        .album-art img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .song-info {
+            margin: 1rem 0;
+        }
+
+        .song-title {
+            font-size: 1.5rem;
+            margin: 0;
+        }
+
+        .artist {
+            color: #888;
+            margin: 0.5rem 0;
+        }
+
+        .progress-bar {
+            background: #444;
+            height: 4px;
+            border-radius: 2px;
+            margin: 1.5rem 0;
+            cursor: pointer;
+        }
+
+        .progress {
+            background: #fff;
+            height: 100%;
+            width: 0%;
+            border-radius: 2px;
+            transition: width 0.1s linear;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        button {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0.5rem;
+        }
+
+        #play-pause {
+            font-size: 2rem;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        #youtube-player {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="player">
+        <div class="album-art">
+            <img src="https://i.ytimg.com/vi/4OZ4Kl3O3KM/maxresdefault.jpg" alt="Carátula">
+        </div>
+        
+        <div class="song-info">
+            <h2 class="song-title">Wildflower</h2>
+            <p class="artist">Billie Eilish</p>
+        </div>
+
+        <div class="progress-bar" id="progress-bar">
+            <div class="progress" id="progress"></div>
+        </div>
+
+        <div class="controls">
+            <button id="prev">⏮</button>
+            <button id="play-pause">▶</button>
+            <button id="next">⏭</button>
+        </div>
+    </div>
+
+    <div id="youtube-player"></div>
+
+    <script>
+        // Configuración de YouTube
+        const playlist = [
+            {id: '4OZ4Kl3O3KM', title: 'Wildflower', artist: 'Billie Eilish'},
+            // Agrega más canciones aquí
+        ];
+
+        let player;
+        let currentSong = 0;
+        let isPlaying = false;
+
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player('youtube-player', {
+                height: '0',
+                width: '0',
+                events: {
+                    'onReady': onPlayerReady,
+                    'onStateChange': onPlayerStateChange
+                }
+            });
+        }
+
+        function onPlayerReady(event) {
+            event.target.loadVideoById(playlist[currentSong].id);
+        }
+
+        function onPlayerStateChange(event) {
+            if (event.data === YT.PlayerState.PLAYING) {
+                document.querySelector('.album-art').style.animationPlayState = 'running';
+                isPlaying = true;
+                updateProgress();
+            } else {
+                document.querySelector('.album-art').style.animationPlayState = 'paused';
+                isPlaying = false;
+            }
+        }
+
+        function updateProgress() {
+            if (isPlaying) {
+                const duration = player.getDuration();
+                const currentTime = player.getCurrentTime();
+                const progress = (currentTime / duration) * 100;
+                document.getElementById('progress').style.width = `${progress}%`;
+                requestAnimationFrame(updateProgress);
+            }
+        }
+
+        // Controles
+        document.getElementById('play-pause').addEventListener('click', () => {
+            if (isPlaying) {
+                player.pauseVideo();
+            } else {
+                player.playVideo();
+            }
+        });
+
+        document.getElementById('progress-bar').addEventListener('click', (e) => {
+            const rect = e.target.getBoundingClientRect();
+            const percent = (e.clientX - rect.left) / rect.width;
+            player.seekTo(player.getDuration() * percent);
+        });
+
+        // Cargar API de YouTube
+        const tag = document.createElement('script');
+        tag.src = "https://www.youtube.com/iframe_api";
+        const firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+    </script>
+</body>
+</html>
