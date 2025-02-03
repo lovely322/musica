@@ -1,0 +1,20 @@
+{
+    "name": "ForYou❤️",
+    "short_name": "ForYou",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#ff69b4",
+    "theme_color": "#ff69b4",
+    "icons": [
+      {
+        "src": "https://files.catbox.moe/xgv2gd.jpg",
+        "sizes": "192x192",
+        "type": "image/jpg"
+      },
+      {
+        "src": "https://files.catbox.moe/xgv2gd.jpg",
+        "sizes": "512x512",
+        "type": "image/jpg"
+      }
+    ]
+  }
