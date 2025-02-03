@@ -1,0 +1,528 @@
+@keyframes discoTocando {
+  from{
+    transform: rotate(0deg);
+  }
+  to{
+    transform: rotate(360deg);
+  }
+}
+
+:root{
+  font-size: calc(0.8em + 0.3vmax);
+}
+
+body{
+  background-color: rgb(30,30,30);
+  margin: 0;
+  font-family: "Poppins", serif;
+  /* background-image: url("./fondo/HD-wallpaper-nubes-aesthetic-estrellas-fondo-de-pantalla-luna-noche-sky.jpg"); */
+}
+
+video{
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+  object-fit: cover;
+  z-index: -1;
+}
+
+.overlay {
+  z-index: -1;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Negro con opacidad del 50% */
+  pointer-events: none; /* Permite que los clics pasen al video */
+}
+
+.oculto{
+  display: none;
+}
+
+.reproductor{
+  opacity: 90%;
+  margin: 9%;
+  /* margin-left: 8%;
+  margin-right: 8%; */
+  margin-bottom: 11%;
+  position: fixed;
+  bottom: 0;
+  color: rgb(255, 255, 255);
+  display: flex;
+  flex-flow: row wrap;
+  right: 0px;
+  left: 0px;
+  padding: 0.6em 2em 0.2em;
+  justify-content: center;
+  align-items: center;
+  gap: 0.4em 0em;
+  /* box-shadow: 0px 7px 15px 2px rgba(0, 0, 0, 0.423);
+  background-color: #ffffff35;
+  backdrop-filter: saturate(90%) blur(5px);
+  border-radius: 30px; */
+}
+
+.reproductor button{
+  opacity: 90%;
+  border: none;
+  background: none;
+  color: inherit;
+  font-size: 2.1em;
+  cursor: pointer;
+  padding: 0.5em;
+  text-shadow: 0px 5px 2px rgba(0, 0, 0, 0.293);
+}
+
+.reproductor button i{
+  transition-property: transform color;
+  transition-duration: 0.3s;
+  color: rgb(255, 255, 255);
+}
+
+.reproductor button:hover i{
+  color: inherit;
+  transform: scale(1.2);
+}
+
+.reproductor button:active i{
+  color: rgb(50, 50, 50);
+}
+
+.reproductor button .fa-play, .reproductor button .fa-pause{
+  font-size: 2em;
+  margin-left: 0.1em;
+}
+
+.reproductor .cancion{
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  flex-basis: 15em;
+}
+
+.reproductor .cancion__titulo{
+  font-size: 0.8em;
+  margin: 0;
+  padding-top: 3.5em;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+.reproductor .cancion__caratula{
+  background-color: rgb(40,40,40);
+  border-radius: 50%;
+  border: 0.35em solid rgb(50,50,50);
+  width: 6em;
+  height: 6em;
+  display: flex;
+  flex-flow: row wrap;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  position: absolute;
+  top: -3.5em;
+}
+
+.reproductor .cancion__caratula .brazo{
+  transition-property: transform, position;
+  transition-duration: 1s;
+  width: 4.2em;
+  height: 0.3em;
+  position: absolute;
+  top: -0.6em;
+  left: 0;
+  transform-origin: left top;
+  background-color: rgb(50,50,50);;
+  border: 1px solid rgb(100, 100, 100);
+}
+
+.reproductor.reproduciendo .cancion__caratula .brazo{
+  transform: rotate(15deg);
+}
+
+.reproductor .cancion__caratula .brazo::after{
+  content: "";
+  width: 1em;
+  height: 0.7em;
+  position: absolute;
+  top: -0.01em;
+  left: 3.9em;
+  transform: rotate(45deg);
+  background-color: rgb(110, 110, 110);
+}
+
+.reproductor .cancion__caratula .etiqueta{
+  width: 1em;
+  height: 1em;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  border-radius: 50%;
+  background-color: rgba(200, 200, 200, 0.887);
+  border: 0.2em solid rgba(255, 255, 255, 0.656);
+}
+
+.reproductor .cancion__caratula .etiqueta::after{
+  content: "";
+  width: 0.3em;
+  height: 0.3em;
+  position: absolute;
+  top: 48%;
+  left: 43%;
+  transform: translateY(-50%);
+  border-radius: 50%;
+  background-color: rgb(255, 255, 255);
+}
+
+.reproductor .cancion__caratula img{
+  width: 100%;
+  animation-name: discoTocando;
+  animation-duration: 4s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+.reproductor .cancion__caratula i{
+  font-size: 2em;
+  margin-right: 0.1em;
+  margin-bottom: 0.1em;
+}
+
+.reproductor .reproduccion{
+  display: flex;
+  flex-flow: column;
+  flex-grow: 1;
+  flex-basis: 20em;
+  justify-content: center;
+  align-items: center;
+}
+
+.reproductor .reproduccion__progreso{
+  display: flex;
+  flex-flow: column;
+  width: 100%;
+}
+
+.reproductor .reproduccion__controles{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;  
+}
+
+.reproductor .controles__reproduccion{
+  display: flex;
+  gap: 0.6em;
+  flex-grow: 1;
+  justify-content: center;
+  margin-left: 2.7em;
+}
+
+.reproductor .controles__volumen{
+  position: relative;
+}
+
+.reproductor .controles__volumen button{
+  width: 1.5em;
+}
+
+.reproductor .controles__volumen input{
+  position: absolute;
+  width: 100px;
+  margin-left: -10%;
+  transform-origin: left;
+  transform: rotate(-90deg) translateY(1em) translateX(1.25em);
+  box-shadow: 0 0 3em 1em rgba(0, 0, 0, 0);
+  padding: 2em 0em;
+}
+
+.reproductor input[type="range"]{
+  margin-left: 0%;
+  cursor: pointer;
+  
+}
+
+.reproductor input[type="range"]:active{
+  color: rgba(255, 255, 255, 0);  
+}
+
+.barra{
+  color: rgb(0, 207, 59);
+}
+
+/* Estilo del botón para abrir la galería */
+.gallery-button {
+  padding: 10px 20px;
+  font-size: 14px;
+  cursor: pointer;
+  border: none;
+  background-color: #c6c6c65d;
+  color: rgb(241, 241, 241);
+  border-radius: 20px;
+  position: absolute;
+  top: 10px; /* Ajusta este valor para que esté casi pegado a la parte superior */
+  left: 50%;
+  transform: translateX(-50%); /* Centra horizontalmente */
+  z-index: 99;
+  box-shadow: 0px 7px 15px 2px rgba(0, 0, 0, 0.496);
+}
+
+/* Estilo del popup */
+.popup-gallery {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.552);
+  z-index: 1000;
+  overflow-y: auto;
+}
+
+/* Encabezado de la galería */
+.gallery-header {
+  text-align: right;
+  padding: 10px;
+}
+
+/* Botón para cerrar */
+.close-button {
+  font-size: 34px;
+  color: white;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+/* Contenido de la galería */
+.gallery-content {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 10px;
+  padding: 20px;
+  justify-items: center;
+}
+
+.gallery-content img {
+  width: 100%; /* Ocupa todo el ancho del contenedor */
+  height: 100%; /* Ocupa toda la altura del contenedor */
+  object-fit: cover; /* Asegura que la imagen se recorte para llenar el espacio */
+  border-radius: 8px; /* Opcional: esquinas redondeadas */
+}
+
+.gallery-content .grid-item {
+  width: 200px; /* Tamaño fijo para el grid */
+  height: 200px; /* Asegura que todas las imágenes sean cuadradas */
+  overflow: hidden; /* Oculta las partes que sobresalen de la imagen */
+  position: relative; /* Para controlar el contenido interno */
+}
+
+.gallery-content img:hover {
+  transform: scale(1.05);
+}
+
+/* Estilo general de la barra de progreso */
+input[type="range"] {
+  -webkit-appearance: none; /* Elimina el estilo predeterminado */
+  appearance: none; /* Compatibilidad con otros navegadores */
+  width: 100%; /* Ancho de la barra */
+  height: 6px; /* Altura de la barra */
+  background: #dddddd00; /* Fondo de la barra */
+  border-radius: 5px; /* Bordes redondeados */
+  outline: none; /* Sin borde al seleccionar */
+  transition: background 0.3s ease-in-out;
+}
+
+/* Personalización del "thumb" (el círculo que arrastras) */
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none; /* Elimina el estilo predeterminado */
+  appearance: none;
+  width: 16px; /* Ancho del thumb */
+  margin-top: -1.2%;
+  margin-left: -2%;
+  height: 16px; /* Altura del thumb */
+  background: #fff; /* Color del thumb */
+  border-radius: 50%; /* Forma redondeada */
+  cursor: pointer; /* Cambia el cursor al pasar sobre el thumb */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Sombra para efecto */
+  border: none;
+}
+
+/* Personalización del "thumb" en navegadores Firefox */
+input[type="range"]::-moz-range-thumb {
+
+  background: #ff5733;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  border: none;
+}
+
+/* Color del progreso (parte llenada de la barra) */
+input[type="range"]::-webkit-slider-runnable-track {
+  background: linear-gradient(to right, #f382b7 0%, #f7bfd8 100%);
+  height: 10px;
+  border-radius: 5px; 
+}
+#hearts-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none; /* Permite interactuar con elementos debajo */
+}
+
+.heart {
+  position: absolute;
+  color: #ff4d4d; /* Color del corazón */
+  font-size: 20px; /* Tamaño del corazón */
+  user-select: none; /* Evita que el texto sea seleccionable */
+  animation: fall linear infinite; /* Animación de caída */
+}
+
+@keyframes fall {
+  to {
+    transform: translateY(100vh); /* Mueve el corazón hacia abajo */
+  }
+}
+
+/* Estilos para el mensaje de escritorio */
+#desktop-message {
+  display: none; /* Oculta el mensaje por defecto */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #fff;
+  color: #333;
+  font-family: Arial, sans-serif;
+  text-align: center;
+  padding-top: 20%;
+  box-sizing: border-box;
+  z-index: 1000;
+}
+
+/* Mostrar mensaje en pantallas de escritorio */
+@media (min-width: 768px) {
+  #hearts-container {
+    display: none; /* Oculta el efecto de corazones */
+  }
+
+  #desktop-message {
+    display: block; /* Muestra el mensaje */
+  }
+}
+/* Estilos CSS */
+.valentine-preloader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #ffeff7;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  transition: opacity 1s ease;
+  font-family: 'Pacifico', cursive;
+}
+
+.hearts-container {
+  position: relative;
+  width: 200px;
+  height: 200px;
+}
+
+.heart-loader {
+  font-size: 80px;
+  animation: heartbeat 1.2s infinite;
+  color: #ff3f6c;
+  text-shadow: 0 0 20px rgba(255, 63, 108, 0.4);
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.floating-hearts {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+.floating-hearts::before,
+.floating-hearts::after {
+  content: '💖';
+  position: absolute;
+  font-size: 30px;
+  opacity: 0;
+  animation: float 3s infinite;
+}
+
+.floating-hearts::before {
+  left: 20%;
+  animation-delay: 0.5s;
+}
+
+.floating-hearts::after {
+  right: 20%;
+  animation-delay: 1s;
+}
+
+.loading-text {
+  color: #ff3f6c;
+  font-size: 24px;
+  margin-top: 20px;
+  animation: textPulse 2s infinite;
+}
+
+.progress {
+  color: #ff85a2;
+  font-size: 20px;
+  margin-top: 10px;
+}
+
+@keyframes heartbeat {
+  0% { transform: translate(-50%, -50%) scale(1); }
+  15% { transform: translate(-50%, -50%) scale(1.3); }
+  30% { transform: translate(-50%, -50%) scale(1); }
+  45% { transform: translate(-50%, -50%) scale(1.15); }
+  60% { transform: translate(-50%, -50%) scale(1); }
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0) scale(0);
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+    transform: translateY(-100px) scale(1);
+  }
+  100% {
+    transform: translateY(-200px) scale(0);
+    opacity: 0;
+  }
+}
+
+@keyframes textPulse {
+  0% { opacity: 0.8; }
+  50% { opacity: 1; text-shadow: 0 0 10px #ff3f6c; }
+  100% { opacity: 0.8; }
+}
+
+.valentine-preloader.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
