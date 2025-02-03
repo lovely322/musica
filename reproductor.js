@@ -130,6 +130,9 @@ function cargarCancion(sentido) {
     console.error('Error al cargar el audio:', e);
     // Puedes añadir aquí un manejo de errores visual
   });
+  cancion.audio.addEventListener('ended', () => {
+    cargarCancion(1);
+  });
 }
 
 function cambiarCancion() {
@@ -174,11 +177,8 @@ function duracionCancion(duracionS) {
 }
 
 function actualizarReproductor() {
-  idFrame = requestAnimationFrame(actualizarReproductor);
-
   let momentoActual = duracionCancion(cancion.audio.currentTime);
   reproductor.duracion.innerText = `${momentoActual.minutos}:${momentoActual.segundos}/${cancion.duracion.minutos}:${cancion.duracion.segundos}`;
-
   reproductor.deslizador['progresoCancion'].value = cancion.audio.currentTime;
 
   if (cancion.audio.currentTime >= cancion.audio.duration - 0.5) {
@@ -191,12 +191,12 @@ function alternarReproduccion() {
   reproductor.boton['reproducirPausa'].firstChild.classList.toggle(icono['pausa']);
 
   if (!pausar) {
-    idFrame = requestAnimationFrame(actualizarReproductor);
+    idFrame = setInterval(actualizarReproductor, 1000); // Actualizar cada segundo
     cancion.audio.play();
     reproductor['caratula'].style.animationPlayState = 'running';
     reproductor.nodo.classList.add('reproduciendo');
   } else {
-    window.cancelAnimationFrame(idFrame);
+    clearInterval(idFrame);
     cancion.audio.pause();
     reproductor['caratula'].style.animationPlayState = 'paused';
     reproductor.nodo.classList.remove('reproduciendo');
@@ -225,3 +225,10 @@ function moverVolumen(e) {
     iconoVolumen.className = icono['volumenAlto'];
   }
 }
+document.addEventListener('visibilitychange', () => {
+  if (!document.hidden && !cancion.audio.paused) {
+    idFrame = setInterval(actualizarReproductor, 1000);
+  } else {
+    clearInterval(idFrame);
+  }
+});
